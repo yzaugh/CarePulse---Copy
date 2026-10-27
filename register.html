@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarePulse - Patient Registration</title>
+  <link rel="stylesheet" href="login.css?v=split-patient-name">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body class="registration-page">
+  <main class="login-container">
+    <section class="login-card">
+      <div class="brand">
+        <i data-feather="heart"></i>
+        <h2>CarePulse</h2>
+      </div>
+      <p class="subtitle">Create your patient account</p>
+      <p id="registration-message" role="status" aria-live="polite"></p>
+      <form id="registration-form">
+        <div class="name-fields">
+          <div class="input-group">
+            <label for="register-first-name">First name</label>
+            <input type="text" id="register-first-name" name="first_name" maxlength="100" autocomplete="given-name" required>
+          </div>
+          <div class="input-group">
+            <label for="register-middle-name">Middle name <span class="optional-label">(optional)</span></label>
+            <input type="text" id="register-middle-name" name="middle_name" maxlength="100" autocomplete="additional-name">
+            <label class="optional-checkbox" for="register-no-middle-name">
+              <input type="checkbox" id="register-no-middle-name">
+              <span>I don't have a middle name</span>
+            </label>
+          </div>
+          <div class="input-group">
+            <label for="register-last-name">Last name</label>
+            <input type="text" id="register-last-name" name="last_name" maxlength="100" autocomplete="family-name" required>
+          </div>
+          <div class="input-group">
+            <label for="register-suffix">Suffix <span class="optional-label">(optional)</span></label>
+            <input type="text" id="register-suffix" name="suffix" maxlength="20" autocomplete="honorific-suffix" placeholder="e.g. Jr., III">
+            <label class="optional-checkbox" for="register-no-suffix">
+              <input type="checkbox" id="register-no-suffix">
+              <span>I don't have a suffix</span>
+            </label>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="register-email">Email address</label>
+          <input type="email" id="register-email" name="email" maxlength="100" autocomplete="email" required>
+        </div>
+        <div class="input-group">
+          <label for="register-password">Password (at least 10 characters)</label>
+          <input type="password" id="register-password" name="password" minlength="10" autocomplete="new-password" required>
+        </div>
+        <div class="input-group">
+          <label for="register-password-confirm">Confirm password</label>
+          <input type="password" id="register-password-confirm" name="password_confirmation" minlength="10" autocomplete="new-password" required>
+        </div>
+        <div class="input-group">
+          <label for="register-phone">Phone</label>
+          <input type="tel" id="register-phone" name="phone" maxlength="20">
+        </div>
+        <div class="input-group">
+          <label for="register-dob">Date of birth</label>
+          <input type="date" id="register-dob" name="dob">
+        </div>
+        <div class="input-group">
+          <label for="register-gender">Gender</label>
+          <input type="text" id="register-gender" name="gender" maxlength="20">
+        </div>
+        <div class="input-group">
+          <label for="register-address">Address</label>
+          <input type="text" id="register-address" name="address" maxlength="1000">
+        </div>
+        <button type="submit" class="submit-btn" id="register-submit">Create account</button>
+      </form>
+      <p class="register-link"><a href="login.html">Back to login</a></p>
+    </section>
+  </main>
+  <script src="register.js?v=split-patient-name"></script>
+  <script>feather.replace();</script>
+</body>
+</html>

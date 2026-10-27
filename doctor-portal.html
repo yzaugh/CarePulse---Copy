@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarePulse - Doctor Portal</title>
+  <link rel="stylesheet" href="styles.css?v=appointment-details">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="brand">
+        <i data-feather="heart"></i>
+        <h2>CarePulse</h2>
+      </div>
+      <nav class="nav-menu">
+        <a href="#" onclick="loadSection('dashboard', this); return false;" class="nav-item active"><i data-feather="home"></i> Dashboard</a>
+        <a href="#" onclick="loadSection('patients', this); return false;" class="nav-item"><i data-feather="users"></i> My Patients</a>
+        <a href="#" onclick="loadSection('appointments', this); return false;" class="nav-item"><i data-feather="calendar"></i> Appointments</a>
+        <a href="#" onclick="loadSection('schedule', this); return false;" class="nav-item"><i data-feather="clock"></i> My Schedule</a>
+        <a href="#" onclick="loadSection('records', this); return false;" class="nav-item"><i data-feather="file-text"></i> Medical Records</a>
+
+        <a href="#" onclick="logoutUser()" class="nav-item" style="margin-top: auto; color: #ee5d50;"><i data-feather="log-out"></i> Logout</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <h1 id="page-title">Doctor Dashboard</h1>
+        <div class="user-profile">
+          <i data-feather="bell"></i>
+          <div class="avatar" id="user-avatar">DR</div>
+          <span id="user-name">Doctor</span>
+        </div>
+      </header>
+
+      <!-- Dashboard Section -->
+      <section id="section-dashboard" class="content-section">
+        <section class="kpi-grid">
+          <div class="card">
+            <div class="card-icon blue"><i data-feather="users"></i></div>
+            <div class="card-info">
+              <h3>My Patients</h3>
+              <p class="card-value" id="my-patients-count">0</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon green"><i data-feather="calendar"></i></div>
+            <div class="card-info">
+              <h3>Today's Appointments</h3>
+              <p class="card-value" id="today-appointments-count">0</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon orange"><i data-feather="file-text"></i></div>
+            <div class="card-info">
+              <h3>Records Reviewed</h3>
+              <p class="card-value" id="reviewed-count">0</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="table-container">
+          <h2>Upcoming Schedule</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Patient</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="todays-schedule">
+              <tr><td colspan="6" style="text-align: center;">Loading appointments...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- My Patients Section -->
+      <section id="section-patients" class="content-section" style="display: none;">
+        <div class="table-container">
+          <h2>My Patients</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Patient Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Last Visit</th>
+                <th>Blood Type</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="patients-table">
+              <tr><td colspan="6" style="text-align: center;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+            <!-- Appointments Section -->
+      <section id="section-appointments" class="content-section" style="display: none;">
+        <div class="table-container">
+          <h2>My Appointments</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Patient</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="appointments-table">
+              <tr><td colspan="6" style="text-align: center;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Schedule Section -->
+      <section id="section-schedule" class="content-section" style="display: none;">
+        <div class="table-container">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>My Weekly Schedule</h2>
+            <button class="btn-primary" onclick="saveAvailability()">Save Schedule</button>
+          </div>
+          <p style="margin-bottom: 20px; color: var(--text-secondary);">Set your available working hours for each day of the week.</p>
+          <div id="availability-editor" class="availability-grid">
+            <!-- JavaScript will populate this -->
+          </div>
+        </div>
+      </section>
+
+
+      <!-- Medical Records Section -->
+      <section id="section-records" class="content-section" style="display: none;">
+        <div class="table-container">
+          <h2>Medical Records</h2>
+          <button class="btn-primary" onclick="createNewRecord()">+ Create New Record</button>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Patient</th>
+                <th>Type</th>
+                <th>Diagnosis</th>
+                <th>Prescription</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="records-table">
+              <tr><td colspan="6" style="text-align: center;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="shared.js"></script>
+  <script src="doctor-portal.js"></script>
+  <script>feather.replace();</script>
+</body>
+</html>

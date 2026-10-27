@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarePulse - Appointment Scheduler</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="brand">
+        <i data-feather="heart"></i>
+        <h2>CarePulse</h2>
+      </div>
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-item"><i data-feather="arrow-left"></i> Back to Admin</a>
+        <a href="#" onclick="loadSection('calendar')" class="nav-item active"><i data-feather="calendar"></i> Calendar View</a>
+        <a href="#" onclick="loadSection('schedule')" class="nav-item"><i data-feather="list"></i> All Appointments</a>
+        <a href="#" onclick="loadSection('book')" class="nav-item"><i data-feather="plus-circle"></i> Book Appointment</a>
+        <a href="#" onclick="loadSection('analytics')" class="nav-item"><i data-feather="bar-chart-2"></i> Analytics</a>
+        <a href="#" onclick="logoutUser()" class="nav-item" style="margin-top: auto; color: #ee5d50;"><i data-feather="log-out"></i> Logout</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <h1 id="page-title">Appointment Scheduling</h1>
+        <div class="user-profile">
+          <i data-feather="bell"></i>
+          <div class="avatar" id="user-avatar">AP</div>
+          <span id="user-name">User</span>
+        </div>
+      </header>
+
+      <!-- Calendar View Section -->
+      <section id="section-calendar" class="content-section">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div class="table-container">
+            <h2>Calendar</h2>
+            <div id="calendar-container" style="min-height: 400px;">
+              <!-- Calendar will be rendered here -->
+            </div>
+          </div>
+
+          <div class="table-container">
+            <h2>Selected Date Appointments</h2>
+            <p id="selected-date-display" style="color: var(--text-secondary); margin-bottom: 15px;">Select a date to view appointments</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Patient</th>
+                  <th>Doctor</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="calendar-appointments">
+                <tr><td colspan="5" style="text-align: center;">No appointments for this date</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- All Appointments Section -->
+      <section id="section-schedule" class="content-section" style="display: none;">
+        <div class="table-container">
+          <h2>All Appointments</h2>
+          <div style="margin-bottom: 15px;">
+            <label style="margin-right: 10px;">Filter by Status:</label>
+            <select id="status-filter" onchange="filterAppointments()" style="padding: 8px; border: 1px solid var(--border-color); border-radius: 6px;">
+              <option value="">All Statuses</option>
+              <option value="scheduled">Scheduled</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Appointment ID</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="appointments-table">
+              <tr><td colspan="8" style="text-align: center;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Book Appointment Section -->
+      <section id="section-book" class="content-section" style="display: none;">
+        <div class="table-container">
+          <h2>Book New Appointment</h2>
+          <form id="booking-form" onsubmit="submitBooking(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Patient:</label>
+                <select id="booking-patient" required style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                  <option value="">Select a patient...</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Doctor:</label>
+                <select id="booking-doctor" required style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;" onchange="updateAvailableTimes()">
+                  <option value="">Select a doctor...</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Date:</label>
+                <input type="date" id="booking-date" required style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+              </div>
+
+              <div class="form-group">
+                <label>Time:</label>
+                <select id="booking-time" required style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                  <option value="">Select time...</option>
+                  <option value="09:00">09:00 AM</option>
+                  <option value="09:30">09:30 AM</option>
+                  <option value="10:00">10:00 AM</option>
+                  <option value="10:30">10:30 AM</option>
+                  <option value="11:00">11:00 AM</option>
+                  <option value="11:30">11:30 AM</option>
+                  <option value="14:00">2:00 PM</option>
+                  <option value="14:30">2:30 PM</option>
+                  <option value="15:00">3:00 PM</option>
+                  <option value="15:30">3:30 PM</option>
+                  <option value="16:00">4:00 PM</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Reason for Visit:</label>
+              <textarea id="booking-reason" required placeholder="Enter reason for appointment..." style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; min-height: 80px;"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Additional Notes:</label>
+              <textarea id="booking-notes" placeholder="Any additional notes..." style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; min-height: 60px;"></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary">Book Appointment</button>
+            <button type="reset" class="btn-primary" style="background-color: var(--text-secondary); margin-left: 10px;">Clear Form</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Analytics Section -->
+      <section id="section-analytics" class="content-section" style="display: none;">
+        <section class="kpi-grid">
+          <div class="card">
+            <div class="card-icon blue"><i data-feather="calendar"></i></div>
+            <div class="card-info">
+              <h3>Total Appointments</h3>
+              <p class="card-value" id="total-appointments">0</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon green"><i data-feather="check-circle"></i></div>
+            <div class="card-info">
+              <h3>Completed</h3>
+              <p class="card-value" id="completed-appointments">0</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon orange"><i data-feather="clock"></i></div>
+            <div class="card-info">
+              <h3>Scheduled</h3>
+              <p class="card-value" id="scheduled-appointments">0</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon purple"><i data-feather="x-circle"></i></div>
+            <div class="card-info">
+              <h3>Cancelled</h3>
+              <p class="card-value" id="cancelled-appointments">0</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="table-container">
+          <h2>Doctor Workload Analysis</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Doctor</th>
+                <th>Specialization</th>
+                <th>Total Appointments</th>
+                <th>This Week</th>
+                <th>Completed</th>
+                <th>Upcoming</th>
+              </tr>
+            </thead>
+            <tbody id="doctor-analytics">
+              <tr><td colspan="6" style="text-align: center;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-container" style="margin-top: 20px;">
+          <h2>Patient Appointment History</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Patient</th>
+                <th>Total Appointments</th>
+                <th>Last Appointment</th>
+                <th>Next Appointment</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="patient-analytics">
+              <tr><td colspan="5" style="text-align: center;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="shared.js"></script>
+  <script src="appointments.js"></script>
+  <script>feather.replace();</script>
+</body>
+</html>
+
+<style>
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-main);
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  font-family: inherit;
+}
+
+.calendar-day {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.calendar-day:hover {
+  background-color: var(--bg-primary);
+}
+
+.calendar-day.active {
+  background-color: var(--accent-blue);
+  color: white;
+  border-color: var(--accent-blue);
+}
+
+.calendar-day.has-appointments::after {
+  content: '•';
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  color: var(--accent-green);
+  font-weight: bold;
+}
+</style>

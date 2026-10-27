@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarePulse Health Center - Care & Compassion</title>
+  <link rel="stylesheet" href="patient-home.css">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="brand">
+      <i data-feather="heart"></i>
+      <h2>CarePulse</h2>
+    </div>
+    <nav class="nav-links">
+      <a href="#about">About Us</a>
+      <a href="#vision-mission">Vision & Mission</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="auth-buttons">
+      <a href="login.html" class="btn-secondary">Staff Portal</a>
+      <button class="btn-primary" onclick="openBookingModal()">Book Appointment</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <span class="badge">Your Health, Our Priority</span>
+      <h1>Compassionate Care Meets Modern Medicine</h1>
+      <p>CarePulse Health Center provides top-tier medical services, personalized treatment plans, and 24/7 emergency assistance for you and your family.</p>
+      <div class="hero-btns">
+        <button class="btn-primary btn-lg" onclick="openBookingModal()">Book an Appointment</button>
+        <a href="#services" class="btn-outline btn-lg">Explore Services</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <div class="container">
+      <div class="section-title">
+        <h2>About CarePulse Health Center</h2>
+        <p>Serving our community with dedicated healthcare professionals and state-of-the-art facilities for over 15 years.</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-card">
+          <i data-feather="award"></i>
+          <h3>Experienced Doctors</h3>
+          <p>Our team consists of over 50 board-certified specialists committed to high-quality care.</p>
+        </div>
+        <div class="about-card">
+          <i data-feather="clock"></i>
+          <h3>24/7 Emergency Care</h3>
+          <p>Round-the-clock medical attention with advanced life support equipment.</p>
+        </div>
+        <div class="about-card">
+          <i data-feather="check-circle"></i>
+          <h3>Modern Technology</h3>
+          <p>Equipped with cutting-edge diagnostic tools and automated digital health records.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="vision-mission" class="section bg-light">
+    <div class="container">
+      <div class="vision-mission-grid">
+        <div class="vm-card">
+          <div class="vm-icon"><i data-feather="eye"></i></div>
+          <h3>Our Vision</h3>
+          <p>To be the leading, most trusted healthcare provider in the region—setting global standards for compassionate patient care, clinical innovation, and community wellness.</p>
+        </div>
+        <div class="vm-card">
+          <div class="vm-icon"><i data-feather="target"></i></div>
+          <h3>Our Mission</h3>
+          <p>To deliver accessible, patient-centered, and preventive medical services by leveraging advanced technology and fostering a culture of continuous medical excellence.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="bookingModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeBookingModal()">&times;</span>
+      <h2>Book an Appointment</h2>
+      <p>Fill out the details below to schedule your visit.</p>
+
+      <form id="appointmentForm" onsubmit="handleBookingSubmit(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="john@example.com" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Department</label>
+            <select required>
+              <option value="">Select Department</option>
+              <option>General Medicine</option>
+              <option>Cardiology</option>
+              <option>Pediatrics</option>
+              <option>Neurology</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Preferred Date</label>
+            <input type="date" required>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary full-width">Confirm Booking</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="patient-home.js"></script>
+  <script>feather.replace();</script>
+</body>
+</html>

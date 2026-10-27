@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarePulse - Inventory</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="brand">
+        <i data-feather="heart"></i>
+        <h2>CarePulse</h2>
+      </div>
+      <nav class="nav-menu">
+        <a href="#" data-section="dashboard" onclick="loadSection('dashboard', this)" class="nav-item active"><i data-feather="home"></i> Dashboard</a>
+        <a href="#" data-section="medicine" onclick="loadSection('medicine', this)" class="nav-item"><i data-feather="thermometer"></i> Medicine</a>
+        <a href="#" data-section="medical-supplies" onclick="loadSection('medical-supplies', this)" class="nav-item"><i data-feather="package"></i> Medical Supplies</a>
+        <a href="#" data-section="utility-supplies" onclick="loadSection('utility-supplies', this)" class="nav-item"><i data-feather="tool"></i> Utility and Maintenance Supplies</a>
+        <a href="#" onclick="logoutUser()" class="nav-item" style="margin-top: auto; color: #ee5d50;"><i data-feather="log-out"></i> Logout</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <h1 id="page-title">Inventory Dashboard</h1>
+        <div class="user-profile">
+          <i data-feather="bell"></i>
+          <div class="avatar" id="user-avatar">IM</div>
+          <span id="user-name">Inventory</span>
+        </div>
+      </header>
+
+      <section id="section-dashboard" class="content-section">
+        <section class="kpi-grid">
+          <div class="card">
+            <div class="card-icon blue"><i data-feather="package"></i></div>
+            <div class="card-info">
+              <h3>Stock Numbers (Units)</h3>
+              <p class="card-value" id="stock-numbers">0</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon green"><i data-feather="download"></i></div>
+            <div class="card-info">
+              <h3>Received Today</h3>
+              <p class="card-value" id="received-today">0</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon orange"><i data-feather="upload"></i></div>
+            <div class="card-info">
+              <h3>Dispensed Today</h3>
+              <p class="card-value" id="dispensed-today">0</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon purple"><i data-feather="clock"></i></div>
+            <div class="card-info">
+              <h3>Expiring Batches (30 Days)</h3>
+              <p class="card-value" id="expiring-batches-count">0</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon orange"><i data-feather="alert-triangle"></i></div>
+            <div class="card-info">
+              <h3>Expired Units</h3>
+              <p class="card-value" id="expired-units">0</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon blue"><i data-feather="thermometer"></i></div>
+            <div class="card-info">
+              <h3>Medicine Items</h3>
+              <p class="card-value" id="medicine-count">0</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="table-container">
+          <h2>Medicine Dispense Summary (All Time)</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Medication</th>
+                <th>Patients Received</th>
+                <th>Quantity Dispensed</th>
+              </tr>
+            </thead>
+            <tbody id="medicine-dispense-summary">
+              <tr><td colspan="3" style="text-align: center;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-container">
+          <h2>Expiring Commodities (Next 30 Days)</h2>
+          <table>
+            <thead><tr><th>Item</th><th>Category</th><th>Expiry Date</th><th>Stock in Batch</th></tr></thead>
+            <tbody id="expiring-batches"><tr><td colspan="4" style="text-align: center;">Loading...</td></tr></tbody>
+          </table>
+        </div>
+
+        <div class="table-container">
+          <h2>Expired Commodities</h2>
+          <table>
+            <thead><tr><th>Item</th><th>Category</th><th>Expiry Date</th><th>Expired Units</th></tr></thead>
+            <tbody id="expired-batches"><tr><td colspan="4" style="text-align: center;">Loading...</td></tr></tbody>
+          </table>
+        </div>
+
+        <div class="table-container">
+          <h2>Recent Stock Activity</h2>
+          <table>
+            <thead><tr><th>Date</th><th>Action</th><th>Item</th><th>Quantity</th><th>Patient</th></tr></thead>
+            <tbody id="recent-stock-activity"><tr><td colspan="5" style="text-align: center;">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="section-medicine" class="content-section" style="display: none;">
+        <div class="table-container">
+          <h2>Medicine</h2>
+          <button class="btn-primary" type="button" onclick="openInventoryItemForm('Medicine')">+ Add Medicine</button>
+          <table>
+            <thead>
+              <tr><th>Item ID</th><th>Medicine</th><th>Stock</th><th>Unit</th><th>Unit Cost (PHP)</th><th>Next Expiry</th><th>Received (Logged)</th><th>Dispensed</th><th>Patients</th><th>Last Updated</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="medicine-table"><tr><td colspan="11" style="text-align: center;">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="section-medical-supplies" class="content-section" style="display: none;">
+        <div class="table-container">
+          <h2>Medical Supplies</h2>
+          <button class="btn-primary" type="button" onclick="openInventoryItemForm('Medical Supplies')">+ Add Medical Supply</button>
+          <table>
+            <thead>
+              <tr><th>Item ID</th><th>Supply</th><th>Stock</th><th>Unit</th><th>Unit Cost (PHP)</th><th>Next Expiry</th><th>Received (Logged)</th><th>Last Updated</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="medical-supplies-table"><tr><td colspan="9" style="text-align: center;">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="section-utility-supplies" class="content-section" style="display: none;">
+        <div class="table-container">
+          <h2>Utility and Maintenance Supplies</h2>
+          <button class="btn-primary" type="button" onclick="openInventoryItemForm('Utility and Maintenance Supplies')">+ Add Utility or Maintenance Supply</button>
+          <table>
+            <thead>
+              <tr><th>Item ID</th><th>Supply</th><th>Stock</th><th>Unit</th><th>Unit Cost (PHP)</th><th>Next Expiry</th><th>Received (Logged)</th><th>Last Updated</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="utility-supplies-table"><tr><td colspan="9" style="text-align: center;">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="shared.js"></script>
+  <script src="inventory-portal.js?v=inventory-stock-batches-v2"></script>
+  <script>feather.replace();</script>
+</body>
+</html>

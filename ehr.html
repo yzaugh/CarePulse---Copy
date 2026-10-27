@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarePulse - Electronic Health Records</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="brand">
+        <i data-feather="heart"></i>
+        <h2>CarePulse</h2>
+      </div>
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-item"><i data-feather="arrow-left"></i> Back to Admin</a>
+        <a href="#" onclick="loadSection('records')" class="nav-item active"><i data-feather="list"></i> View Records</a>
+        <a href="#" onclick="loadSection('create')" class="nav-item"><i data-feather="plus-circle"></i> Create Record</a>
+        <a href="#" onclick="loadSection('search')" class="nav-item"><i data-feather="search"></i> Search Records</a>
+        <a href="#" onclick="logoutUser()" class="nav-item" style="margin-top: auto; color: #ee5d50;"><i data-feather="log-out"></i> Logout</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <h1 id="page-title">Electronic Health Records (EHR)</h1>
+        <div class="user-profile">
+          <i data-feather="bell"></i>
+          <div class="avatar" id="user-avatar">EH</div>
+          <span id="user-name">User</span>
+        </div>
+      </header>
+
+      <!-- View Records Section -->
+      <section id="section-records" class="content-section">
+        <div class="table-container">
+          <h2>Medical Records</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Record ID</th>
+                <th>Date</th>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Type</th>
+                <th>Diagnosis</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="records-table">
+              <tr><td colspan="7" style="text-align: center;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Create Record Section -->
+      <section id="section-create" class="content-section" style="display: none;">
+        <div class="table-container">
+          <h2>Create New Medical Record</h2>
+          <form id="record-form" onsubmit="submitRecordForm(event)">
+            <div class="form-group">
+              <label>Patient:</label>
+              <select id="patient-select" required style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                <option value="">Select a patient...</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Doctor:</label>
+              <select id="doctor-select" required style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                <option value="">Select a doctor...</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group" style="flex: 1;">
+                <label>Record Type:</label>
+                <select id="record-type" required style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                  <option value="">Select type...</option>
+                  <option value="Consultation">Consultation</option>
+                  <option value="Lab Results">Lab Results</option>
+                  <option value="Imaging">Imaging (X-ray, CT, etc.)</option>
+                  <option value="Surgery Report">Surgery Report</option>
+                  <option value="Follow-up">Follow-up Visit</option>
+                  <option value="Discharge Summary">Discharge Summary</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="flex: 1;">
+                <label>Date:</label>
+                <input type="date" id="record-date" required style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Diagnosis/Findings:</label>
+              <textarea id="record-diagnosis" required placeholder="Enter diagnosis or findings..." style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; min-height: 100px;"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Prescription:</label>
+              <textarea id="record-prescription" placeholder="Enter prescription details..." style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; min-height: 80px;"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Vital Signs:</label>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <input type="number" id="vital-temp" placeholder="Temperature (°F)" step="0.1">
+                <input type="text" id="vital-bp" placeholder="Blood Pressure (mmHg)">
+                <input type="number" id="vital-hr" placeholder="Heart Rate (bpm)">
+                <input type="number" id="vital-weight" placeholder="Weight (lbs)">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Notes:</label>
+              <textarea id="record-notes" placeholder="Additional notes..." style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; min-height: 80px;"></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary">Create Record</button>
+            <button type="button" class="btn-primary" onclick="loadSection('records')" style="background-color: var(--text-secondary); margin-left: 10px;">Cancel</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Search Records Section -->
+      <section id="section-search" class="content-section" style="display: none;">
+        <div class="table-container">
+          <h2>Search Medical Records</h2>
+          <div style="margin-bottom: 20px;">
+            <input type="text" id="search-input" placeholder="Search by patient name, ID, doctor name..." style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px;" onkeyup="performSearch()">
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Record ID</th>
+                <th>Date</th>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Type</th>
+                <th>Diagnosis</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="search-results">
+              <tr><td colspan="7" style="text-align: center; color: var(--text-secondary);">Enter search terms to filter records</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Record Detail Modal -->
+  <div id="record-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeRecordModal()">&times;</span>
+      <h2>Medical Record Details</h2>
+      <div id="modal-body" style="max-height: 500px; overflow-y: auto;">
+        <!-- Record details will be populated here -->
+      </div>
+      <div style="margin-top: 20px;">
+        <button class="btn-small" onclick="editCurrentRecord()">Edit</button>
+        <button class="btn-small" onclick="downloadCurrentRecord()">Download</button>
+        <button class="btn-small" onclick="closeRecordModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="shared.js"></script>
+  <script src="ehr.js"></script>
+  <script>feather.replace();</script>
+</body>
+</html>
+
+<style>
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-main);
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  font-family: inherit;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: var(--bg-card);
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0px 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.close-btn {
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: var(--text-main);
+}
+</style>

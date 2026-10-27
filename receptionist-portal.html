@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarePulse - Receptionist Queue</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="brand">
+        <i data-feather="heart"></i>
+        <h2>CarePulse</h2>
+      </div>
+      <nav class="nav-menu">
+        <a href="#" class="nav-item active" aria-current="page"><i data-feather="list"></i> Queue Management</a>
+        <a href="#" onclick="logoutUser()" class="nav-item" style="margin-top: auto; color: #ee5d50;"><i data-feather="log-out"></i> Logout</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <h1 id="page-title">Queue Management</h1>
+        <div class="user-profile">
+          <i data-feather="bell"></i>
+          <div class="avatar" id="user-avatar">RE</div>
+          <span id="user-name">Receptionist</span>
+        </div>
+      </header>
+
+      <section class="content-section">
+        <div class="table-container">
+          <div class="appointment-queue-heading">
+            <h2>Patient Queue</h2>
+            <div>
+              <span id="queue-refresh-status" role="status" aria-live="polite"></span>
+              <button id="queue-refresh-button" class="btn-small" type="button" onclick="loadQueueSection()">Refresh</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Queue #</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="queue-table">
+              <tr><td colspan="7" style="text-align: center;">Loading appointments...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="shared.js"></script>
+  <script src="receptionist-portal.js"></script>
+  <script>feather.replace();</script>
+</body>
+</html>
